@@ -1,7 +1,5 @@
+#routes
 Rails.application.routes.draw do
-  get 'profiles/show'
-  get 'profiles/edit'
-  get 'profiles/pform'
   # config/routes.rb
   root 'posts#index'
 

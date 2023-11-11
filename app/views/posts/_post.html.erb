@@ -1,3 +1,4 @@
+<!-- app/views/posts/show.html.erb -->
 <div id="<%= dom_id post %>">
   <p>
     <strong>Title:</strong>
@@ -16,5 +17,59 @@
     <%= User.find(post.user_id).email %>
     <%= @current_user %>
   </p>
+
+<% if @comments.length <= 2 %>
+  <% @comments.each do |comment| %>
+  <br>
+    <%= comment.content %> 
+  <% end %>
+<% else %>
+  <div id="showComments">
+    <% @comments.first(2).each do |comment| %>
+    <br>
+      <%= comment.content %>
+    <% end %>
+  </div>
+  <button id="showMore">Show More</button>
+
+  <script>
+    document.getElementById('showMore').addEventListener('click', function() {
+      var commentsDiv = document.getElementById('showComments');
+      <% @comments.drop(2).each do |comment| %>
+        var newComment = document.createElement('div');
+        newComment.innerHTML = '<%= j comment.content %>';
+        commentsDiv.appendChild(newComment);
+      <% end %>
+      this.style.display = 'none'; // Hide the "Show More" button
+    });
+  </script>
+<% end %>
+
+
+
+  <% @comments.each do |comment| %>
+  <ul>
+    <% comment.attributes.each do |attribute, value| %>
+      <li><strong><%= attribute %>:</strong> <%= value %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+
+  <% @comments.each do |comment| %>
+  <br>
+    <%= comment.content %>
+  <% end %>
+
+<!-- Render existing comments -->
+<h2>Comments</h2>
+<%= post.comments.find(1).content %>
+<% if controller_name == 'posts' && action_name == 'show' %>
+  <%= render 'comments/cform', commentable: @post %>
+<% end %>
+
+
+
+  <%# <%= render 'comments/cform', commentable: @post %> %>
 
 </div>
